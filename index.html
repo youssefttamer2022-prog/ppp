@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لمسة عطر | متجر العطور</title>
+<style>
+:root{
+  --bg:#0d0b10; --bg2:#17131d; --card:#1d1825; --gold:#d4af6a; --gold2:#f3dfa8;
+  --text:#f4efe6; --muted:#a79fb0; --green:#25d366; --red:#e5484d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",Tahoma,"Cairo",Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:
+ radial-gradient(circle at 15% 10%,rgba(212,175,106,.12),transparent 40%),
+ radial-gradient(circle at 85% 80%,rgba(140,90,200,.12),transparent 45%);pointer-events:none;z-index:0}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(13,11,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,175,106,.2)}
+.nav{max-width:1150px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:12px;flex-wrap:wrap}
+.logo{font-size:1.6rem;font-weight:800;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.tabs{display:flex;gap:8px}
+.tab{background:transparent;border:1px solid rgba(212,175,106,.35);color:var(--text);padding:9px 20px;border-radius:30px;cursor:pointer;font-size:1rem;font-family:inherit;transition:.3s}
+.tab:hover{border-color:var(--gold);color:var(--gold)}
+.tab.active{background:linear-gradient(135deg,var(--gold),#b8924a);color:#1a1405;border-color:transparent;font-weight:700}
+
+main{position:relative;z-index:1;max-width:1150px;margin:auto;padding:0 20px 80px}
+.page{display:none}
+.page.active{display:block;animation:pageIn .6s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:60px 0 40px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:280px}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.3;margin-bottom:16px}
+.hero h1 span{color:var(--gold)}
+.hero p{color:var(--muted);font-size:1.1rem;margin-bottom:26px;max-width:480px}
+.btn-gold{display:inline-block;background:linear-gradient(135deg,var(--gold),#b8924a);color:#1a1405;border:none;padding:13px 32px;border-radius:40px;font-weight:700;font-size:1.05rem;cursor:pointer;font-family:inherit;transition:.3s;box-shadow:0 8px 25px rgba(212,175,106,.25)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(212,175,106,.4)}
+.hero-art{flex:1;min-width:260px;display:flex;justify-content:center;position:relative;height:300px}
+.hero-art svg{height:100%;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 20px 40px rgba(212,175,106,.3))}
+@keyframes float{50%{transform:translateY(-18px) rotate(2deg)}}
+.spark{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--gold2);opacity:0;animation:spark 4s infinite}
+@keyframes spark{0%{opacity:0;transform:translateY(0) scale(.5)}30%{opacity:1}100%{opacity:0;transform:translateY(-120px) scale(1.2)}}
+
+.section-title{font-size:1.7rem;margin:40px 0 24px;display:flex;align-items:center;gap:12px}
+.section-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(212,175,106,.5),transparent)}
+
+/* grid / cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid rgba(212,175,106,.12);border-radius:20px;overflow:hidden;cursor:pointer;position:relative;opacity:0;transform:translateY(30px);transition:transform .4s,box-shadow .4s,border-color .4s,opacity .6s}
+.card.show{opacity:1;transform:none}
+.card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 30px rgba(212,175,106,.15)}
+.card .img{aspect-ratio:1/1;background:linear-gradient(160deg,#241d2e,#15111b);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card .img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .img img{transform:scale(1.08)}
+.card .info{padding:16px}
+.card h3{font-size:1.1rem;margin-bottom:6px}
+.card .size{color:var(--muted);font-size:.9rem;margin-bottom:10px}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{color:var(--gold);font-weight:800;font-size:1.2rem}
+.order-mini{background:var(--green);color:#fff;border:none;padding:8px 14px;border-radius:30px;font-family:inherit;font-weight:700;cursor:pointer;font-size:.9rem;transition:.3s}
+.order-mini:hover{transform:scale(1.07)}
+.badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--gold),#b8924a);color:#1a1405;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:800;z-index:2;animation:pulse 2s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+.del{position:absolute;top:12px;left:12px;background:var(--red);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;z-index:3;font-size:1rem;display:none}
+body.admin .del{display:block}
+.empty{text-align:center;color:var(--muted);padding:50px 10px;border:1px dashed rgba(212,175,106,.3);border-radius:20px;grid-column:1/-1}
+
+/* add button */
+.add-wrap{display:flex;align-items:center;gap:14px;margin:30px 0 10px}
+.plus{width:62px;height:62px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--gold),#b8924a);color:#1a1405;font-size:2.2rem;cursor:pointer;line-height:1;box-shadow:0 0 0 0 rgba(212,175,106,.6);animation:ring 2.2s infinite;transition:transform .3s}
+.plus:hover{transform:rotate(90deg) scale(1.1)}
+@keyframes ring{70%{box-shadow:0 0 0 18px rgba(212,175,106,0)}100%{box-shadow:0 0 0 0 rgba(212,175,106,0)}}
+.add-wrap span{color:var(--muted)}
+.logout{background:none;border:1px solid var(--muted);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit;display:none}
+body.admin .logout{display:inline-block}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.overlay.open{display:flex;animation:fade .3s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--bg2);border:1px solid rgba(212,175,106,.35);border-radius:24px;width:100%;max-width:440px;max-height:92vh;overflow:auto;padding:26px;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.85) translateY(30px)}}
+.modal h2{margin-bottom:6px;color:var(--gold)}
+.modal .sub{color:var(--muted);margin-bottom:18px;font-size:.95rem}
+label{display:block;margin:12px 0 6px;font-size:.95rem;color:var(--gold2)}
+input,textarea,select{width:100%;background:#0f0c14;border:1px solid rgba(212,175,106,.25);color:var(--text);padding:12px 14px;border-radius:12px;font-family:inherit;font-size:1rem;outline:none;transition:.3s}
+input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,106,.15)}
+textarea{resize:vertical;min-height:70px}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn-wa{flex:1;background:var(--green);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:700;font-size:1.05rem;cursor:pointer;font-family:inherit;transition:.3s}
+.btn-wa:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-cancel{background:transparent;color:var(--muted);border:1px solid var(--muted);padding:13px 20px;border-radius:14px;cursor:pointer;font-family:inherit}
+.prod-sum{display:flex;gap:14px;align-items:center;background:#0f0c14;border-radius:14px;padding:10px;margin-bottom:6px}
+.prod-sum img{width:64px;height:64px;border-radius:10px;object-fit:cover}
+.err{color:var(--red);font-size:.9rem;margin-top:8px;min-height:1.2em}
+.preview{margin-top:10px;max-height:180px;border-radius:12px;display:none;width:100%;object-fit:cover}
+.total{margin-top:14px;text-align:center;color:var(--gold);font-weight:800;font-size:1.15rem}
+
+footer{position:relative;z-index:1;text-align:center;color:var(--muted);padding:30px 10px;border-top:1px solid rgba(212,175,106,.15)}
+.wa-float{position:fixed;bottom:22px;left:22px;width:58px;height:58px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;z-index:60;box-shadow:0 8px 25px rgba(37,211,102,.5);animation:pulse 2.5s infinite;text-decoration:none;font-size:1.8rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">✦ لمسة عطر</div>
+    <div class="tabs">
+      <button class="tab active" data-tab="home">العطور</button>
+      <button class="tab" data-tab="new">ما هو جديد ✨</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-text">
+        <h1>اكتشف عطرك <span>المميز</span><br>واترك أثراً لا يُنسى</h1>
+        <p>تشكيلة مختارة من أرقى العطور بأسعار مناسبة. اختر عطرك واطلبه مباشرة عبر واتساب.</p>
+        <button class="btn-gold" onclick="document.getElementById('products').scrollIntoView()">تصفح العطور</button>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </div>
+    <h2 class="section-title" id="products">عطورنا</h2>
+    <div class="grid" id="grid-main"></div>
+  </section>
+
+  <!-- NEW -->
+  <section class="page" id="page-new">
+    <h2 class="section-title" style="margin-top:50px">ما هو جديد ✨</h2>
+    <div class="add-wrap">
+      <button class="plus" id="plusBtn" title="إضافة عطر جديد">+</button>
+      <span>إضافة عطر جديد (للمسؤول فقط)</span>
+      <button class="logout" id="logoutBtn">تسجيل خروج</button>
+    </div>
+    <div class="grid" id="grid-new"></div>
+  </section>
+</main>
+
+<footer>جميع الحقوق محفوظة © لمسة عطر — للطلب واتساب: 01066468110</footer>
+<a class="wa-float" id="waFloat" target="_blank" rel="noopener" title="تواصل واتساب">💬</a>
+
+<!-- ORDER MODAL -->
+<div class="overlay" id="orderOv">
+  <form class="modal" id="orderForm">
+    <h2>إتمام الطلب</h2>
+    <div class="sub">املأ بياناتك وسيتم تحويلك لواتساب لإرسال الطلب</div>
+    <div class="prod-sum"><img id="oImg" alt=""><div><b id="oName"></b><div class="size" id="oSize" style="color:var(--muted);font-size:.9rem"></div><div class="price" id="oPrice"></div></div></div>
+    <label>الاسم</label><input id="cName" required placeholder="اسمك الكامل">
+    <label>رقم الموبايل</label><input id="cPhone" required inputmode="tel" placeholder="01xxxxxxxxx">
+    <label>العنوان</label><textarea id="cAddr" required placeholder="المحافظة - المنطقة - الشارع - رقم المبنى"></textarea>
+    <label>الكمية</label><input id="cQty" type="number" min="1" value="1" required>
+    <label>ملاحظات (اختياري)</label><input id="cNote" placeholder="أي ملاحظات إضافية">
+    <div class="total" id="oTotal"></div>
+    <div class="modal-actions">
+      <button type="submit" class="btn-wa">إرسال الطلب عبر واتساب 💬</button>
+      <button type="button" class="btn-cancel" data-close>إلغاء</button>
+    </div>
+  </form>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="overlay" id="passOv">
+  <form class="modal" id="passForm">
+    <h2>🔒 منطقة المسؤول</h2>
+    <div class="sub">أدخل كلمة المرور للمتابعة</div>
+    <input type="password" id="passIn" placeholder="كلمة المرور" autocomplete="off">
+    <div class="err" id="passErr"></div>
+    <div class="modal-actions">
+      <button class="btn-gold" type="submit" style="flex:1">دخول</button>
+      <button type="button" class="btn-cancel" data-close>إلغاء</button>
+    </div>
+  </form>
+</div>
+
+<!-- ADD MODAL -->
+<div class="overlay" id="addOv">
+  <form class="modal" id="addForm">
+    <h2>إضافة عطر جديد</h2>
+    <div class="sub">اختر الصورة من جهازك واملأ البيانات</div>
+    <label>صورة العطر</label>
+    <input type="file" id="aFile" accept="image/*" required>
+    <img class="preview" id="aPrev" alt="">
+    <label>اسم العطر</label><input id="aName" required placeholder="مثال: عود ملكي">
+    <label>الحجم</label><input id="aSize" required placeholder="مثال: 100 مل">
+    <label>السعر (ج.م)</label><input id="aPrice" type="number" min="0" required placeholder="مثال: 750">
+    <div class="err" id="addErr"></div>
+    <div class="modal-actions">
+      <button class="btn-gold" type="submit" style="flex:1">حفظ وإضافة</button>
+      <button type="button" class="btn-cancel" data-close>إلغاء</button>
+    </div>
+  </form>
+</div>
+
+<script>
+/* ====== الإعدادات (غيّرها من هنا) ====== */
+const WHATSAPP = "201066468110";   // 01066468110 بالصيغة الدولية
+const ADMIN_PASS = "123456789";
+const STORE_KEY = "perfume_new_items_v1";
+
+/* ====== رسم زجاجة عطر SVG ====== */
+function bottleSVG(c1,c2,cap="#d4af6a"){
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient>
+  <linearGradient id="c" x1="0" x2="1"><stop offset="0" stop-color="${cap}"/><stop offset=".5" stop-color="#fff3c9"/><stop offset="1" stop-color="${cap}"/></linearGradient></defs>
+  <rect x="82" y="20" width="36" height="40" rx="6" fill="url(#c)"/>
+  <rect x="90" y="58" width="20" height="22" fill="${cap}" opacity=".8"/>
+  <rect x="35" y="80" width="130" height="190" rx="24" fill="url(#g)" opacity=".95"/>
+  <rect x="45" y="92" width="14" height="150" rx="7" fill="#fff" opacity=".18"/>
+  <rect x="62" y="150" width="76" height="60" rx="8" fill="none" stroke="${cap}" stroke-width="2" opacity=".9"/>
+  <text x="100" y="187" text-anchor="middle" font-size="16" fill="${cap}" font-family="serif">✦ PARFUM ✦</text>
+  </svg>`;
+}
+const svgURI = s => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
+
+/* ====== المنتجات الأساسية (أمثلة - يمكن تعديل الأسماء والأسعار) ====== */
+const BASE = [
+  {id:"b1",name:"عود ملكي",size:"100 مل",price:850,img:svgURI(bottleSVG("#5a2a0f","#c07a2a"))},
+  {id:"b2",name:"مسك الليل",size:"50 مل",price:520,img:svgURI(bottleSVG("#1b1b4a","#5a4bd1"))},
+  {id:"b3",name:"وردة دمشقية",size:"75 مل",price:640,img:svgURI(bottleSVG("#6a1233","#e0577f"))},
+  {id:"b4",name:"عنبر فاخر",size:"100 مل",price:790,img:svgURI(bottleSVG("#4a3a0a","#d9a933"))},
+  {id:"b5",name:"نسيم البحر",size:"50 مل",price:450,img:svgURI(bottleSVG("#0b3a52","#2fb3c9"))},
+  {id:"b6",name:"فانيليا سوداء",size:"100 مل",price:690,img:svgURI(bottleSVG("#161616","#6b4a35"))}
+];
+
+/* ====== التخزين ====== */
+function loadNew(){ try{return JSON.parse(localStorage.getItem(STORE_KEY))||[]}catch(e){return []} }
+function saveNew(a){ localStorage.setItem(STORE_KEY,JSON.stringify(a)); }
+
+/* ====== بناء الكروت ====== */
+const esc = s => String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function cardHTML(p,isNew){
+  return `<div class="card" data-id="${p.id}">
+    ${isNew?'<div class="badge">جديد</div><button class="del" data-del="'+p.id+'" title="حذف">✕</button>':''}
+    <div class="img"><img src="${p.img}" alt="${esc(p.name)}"></div>
+    <div class="info"><h3>${esc(p.name)}</h3><div class="size">${esc(p.size)}</div>
+    <div class="row"><span class="price">${Number(p.price).toLocaleString("ar-EG")} ج.م</span>
+    <button class="order-mini" type="button">اطلب 💬</button></div></div></div>`;
+}
+function reveal(root){
+  const els=root.querySelectorAll(".card:not(.show)");
+  const io=new IntersectionObserver((en)=>{en.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("show"),(i%6)*90);io.unobserve(e.target)}})},{threshold:.1});
+  els.forEach(el=>io.observe(el));
+}
+function render(){
+  const news = loadNew();
+  const all = [...news,...BASE];
+  const gm=document.getElementById("grid-main");
+  gm.innerHTML = all.map(p=>cardHTML(p,false)).join("");
+  const gn=document.getElementById("grid-new");
+  gn.innerHTML = news.length ? news.map(p=>cardHTML(p,true)).join("") :
+    '<div class="empty">لا توجد عطور جديدة حالياً. ترقبوا الجديد قريباً ✨</div>';
+  reveal(gm); reveal(gn);
+}
+function findProduct(id){ return [...loadNew(),...BASE].find(p=>p.id===id); }
+
+/* ====== التبويبات ====== */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+t.dataset.tab).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  reveal(document.getElementById("page-"+t.dataset.tab));
+}));
+
+/* ====== المودال ====== */
+const open = id => document.getElementById(id).classList.add("open");
+const close = id => document.getElementById(id).classList.remove("open");
+document.querySelectorAll(".overlay").forEach(o=>{
+  o.addEventListener("click",e=>{ if(e.target===o) o.classList.remove("open"); });
+  o.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>o.classList.remove("open")));
+});
+
+/* ====== الطلب ====== */
+let current=null;
+function updateTotal(){
+  const q=Math.max(1,parseInt(document.getElementById("cQty").value)||1);
+  document.getElementById("oTotal").textContent="الإجمالي: "+(current.price*q).toLocaleString("ar-EG")+" ج.م";
+}
+document.addEventListener("click",e=>{
+  const del=e.target.closest("[data-del]");
+  if(del){ e.stopPropagation();
+    if(confirm("هل تريد حذف هذا العطر؟")){ saveNew(loadNew().filter(p=>p.id!==del.dataset.del)); render(); }
+    return; }
+  const card=e.target.closest(".card");
+  if(card){
+    current=findProduct(card.dataset.id); if(!current) return;
+    document.getElementById("oImg").src=current.img;
+    document.getElementById("oName").textContent=current.name;
+    document.getElementById("oSize").textContent=current.size;
+    document.getElementById("oPrice").textContent=Number(current.price).toLocaleString("ar-EG")+" ج.م";
+    document.getElementById("cQty").value=1; updateTotal();
+    open("orderOv");
+  }
+});
+document.getElementById("cQty").addEventListener("input",updateTotal);
+document.getElementById("orderForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const q=Math.max(1,parseInt(cQty.value)||1);
+  const msg =
+`🛍️ طلب جديد
+━━━━━━━━━━
+العطر: ${current.name}
+الحجم: ${current.size}
+الكمية: ${q}
+السعر: ${current.price} ج.م
+الإجمالي: ${current.price*q} ج.م
+━━━━━━━━━━
+الاسم: ${cName.value.trim()}
+الموبايل: ${cPhone.value.trim()}
+العنوان: ${cAddr.value.trim()}
+${cNote.value.trim()?("ملاحظات: "+cNote.value.trim()):""}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");
+  close("orderOv"); e.target.reset();
+});
+document.getElementById("waFloat").href=`https://wa.me/${WHATSAPP}`;
+
+/* ====== الإدارة ====== */
+function setAdmin(on){
+  document.body.classList.toggle("admin",on);
+  try{ on?sessionStorage.setItem("adm","1"):sessionStorage.removeItem("adm"); }catch(e){}
+}
+try{ if(sessionStorage.getItem("adm")) setAdmin(true); }catch(e){}
+document.getElementById("plusBtn").addEventListener("click",()=>{
+  if(document.body.classList.contains("admin")) open("addOv");
+  else { passIn.value=""; passErr.textContent=""; open("passOv"); setTimeout(()=>passIn.focus(),100); }
+});
+document.getElementById("logoutBtn").addEventListener("click",()=>setAdmin(false));
+document.getElementById("passForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(passIn.value===ADMIN_PASS){ setAdmin(true); close("passOv"); open("addOv"); }
+  else passErr.textContent="كلمة المرور غير صحيحة";
+});
+
+/* ضغط الصورة قبل الحفظ */
+function compress(file,max=700,q=.82){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onerror=rej;
+    r.onload=()=>{
+      const im=new Image();
+      im.onerror=rej;
+      im.onload=()=>{
+        const s=Math.min(1,max/Math.max(im.width,im.height));
+        const c=document.createElement("canvas");
+        c.width=Math.round(im.width*s); c.height=Math.round(im.height*s);
+        c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+        res(c.toDataURL("image/jpeg",q));
+      };
+      im.src=r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+let pendingImg=null;
+document.getElementById("aFile").addEventListener("change",async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  try{
+    pendingImg=await compress(f);
+    aPrev.src=pendingImg; aPrev.style.display="block";
+  }catch(err){ addErr.textContent="تعذر قراءة الصورة"; }
+});
+document.getElementById("addForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!pendingImg){ addErr.textContent="اختر صورة أولاً"; return; }
+  const list=loadNew();
+  list.unshift({id:"n"+Date.now(),name:aName.value.trim(),size:aSize.value.trim(),price:Number(aPrice.value),img:pendingImg});
+  try{ saveNew(list); }
+  catch(err){ addErr.textContent="المساحة ممتلئة، احذف بعض العطور القديمة."; return; }
+  pendingImg=null; e.target.reset(); aPrev.style.display="none"; addErr.textContent="";
+  close("addOv"); render();
+});
+
+/* ====== الهيرو ====== */
+document.getElementById("heroArt").innerHTML=bottleSVG("#3a1a5a","#d4af6a")+
+  Array.from({length:10},(_,i)=>`<i class="spark" style="left:${10+Math.random()*80}%;bottom:${Math.random()*40}%;animation-delay:${i*.4}s"></i>`).join("");
+
+render();
+</script>
+</body>
+</html>
